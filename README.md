@@ -34,6 +34,8 @@ createPromiseAsync((promise, resolve, reject) => {
 ### Sync callback
 
 Contains typecasting.
+JS dist can't pass `//@ts-check`.
+
 Note that the callback will always be called synchronously.
 
 ```js
@@ -54,6 +56,7 @@ createPromisePromised().then(({ promise, resolve, reject }) => {
 ### Typecasting
 
 The classic way typecasting.
+JS dist can't pass `//@ts-check`.
 
 ```js
 var { promise, resolve, reject } = createPromise();
