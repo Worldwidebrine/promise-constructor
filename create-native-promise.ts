@@ -15,7 +15,7 @@ export const createNativePromise = async<T>() => {
                         reject: broadcastRejection
                     })
                 }
-            } as PromiseLike<T>))();
+            } as PromiseLike<T>))()
         }
     } as PromiseLike<{
         promise: Promise<T>;
