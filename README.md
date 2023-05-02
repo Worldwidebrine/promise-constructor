@@ -10,10 +10,22 @@ Works even if `Promise` is `null`.
 + [TypeScript](./create-native-promise.ts)
 + [JavaScript](./create-native-promise.js)
 
+### Async
+
 ```js
 Promise = null;
 globalThis.Promise = null;
 const { promise, resolve, reject } = await createNativePromise();
+```
+
+### Sync
+
+Contains `as unknown as`.
+
+```js
+Promise = null;
+globalThis.Promise = null;
+const { promise, resolve, reject } = createNativePromiseSync();
 ```
 
 ## By Promise class/constructor
@@ -23,7 +35,7 @@ const { promise, resolve, reject } = await createNativePromise();
 
 ### Async callback
 
-No typecasting.
+No `as unknown as`.
 Note that the callback will always be called asynchronously.
 
 ```js
@@ -33,7 +45,7 @@ createPromiseAsync((promise, resolve, reject) => {
 
 ### Sync callback
 
-Contains typecasting.
+Contains `as unknown as`.
 JS dist can't pass `//@ts-check`.
 
 Note that the callback will always be called synchronously.
@@ -45,7 +57,7 @@ createPromiseSync((promise, resolve, reject) => {
 
 ### Promised
 
-No typecasting.
+No `as unknown as`.
 Nested promise.
 
 ```js
@@ -55,7 +67,7 @@ createPromisePromised().then(({ promise, resolve, reject }) => {
 
 ### Typecasting
 
-The classic way typecasting.
+The classic way using `as unknown as`.
 JS dist can't pass `//@ts-check`.
 
 ```js
