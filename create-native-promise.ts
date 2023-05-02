@@ -3,29 +3,23 @@ type ThenableThenParameters<T> = Parameters<ThenableThen<T>>;
 type BroadcastFulfillment<T> = ThenableThenParameters<T>[0];
 type BroadcastRejection = ThenableThenParameters<never>[1];
 
-class ResolvedThenable implements PromiseLike<void> {
-    then = <ThenableThen<void>>((broadcastFulfillment: () => void) => {
-        broadcastFulfillment();
-    })
-}
-
-export const createNativePromise = async <T>(): Promise<{
-    promise: Promise<T>;
-    resolve: NonNullable<BroadcastFulfillment<T>>;
-    reject: NonNullable<BroadcastRejection>
-}> => {
-    let res: BroadcastFulfillment<T> = null;
-    let rej: BroadcastRejection = null;
-    const promise = (async () => ({
-        then: (broadcastFulfillment, broadcastRejection) => {
-            res = broadcastFulfillment;
-            rej = broadcastRejection
+export const createNativePromise = async<T>() => {
+    return await ({
+        then: (resolve) => {
+            const promise = (async () => ({
+                then: async (broadcastFulfillment, broadcastRejection) => {
+                    await null;
+                    (<(value: any) => void>resolve)({
+                        promise,
+                        resolve: broadcastFulfillment,
+                        reject: broadcastRejection
+                    })
+                }
+            } as PromiseLike<T>))();
         }
-    } as PromiseLike<T>))();
-    await new ResolvedThenable; // await another thenable object to make sure the promise has been constructed
-    return {
-        promise,
-        resolve: res as unknown as NonNullable<BroadcastFulfillment<T>>,
-        reject: rej as unknown as NonNullable<BroadcastRejection>
-    };
+    } as PromiseLike<{
+        promise: Promise<T>;
+        resolve: NonNullable<BroadcastFulfillment<T>>;
+        reject: NonNullable<BroadcastRejection>
+    }>);
 };
